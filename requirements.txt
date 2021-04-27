@@ -1,0 +1,4 @@
+transformers[torch]
+beautifulsoup4
+requests
+Flask

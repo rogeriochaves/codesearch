@@ -1,0 +1,101 @@
+Input:
+For DataFrame objects, a string indicating either a column name or an index level name to be used to group. df.groupby('A') is just syntactic sugar for df.groupby(df 
+
+Output:
+df.groupby('A') df.groupby(df
+
+Input:
+pandas.DataFrame.groupby¶ ... Group DataFrame using a mapper or by a Series of columns. A groupby operation involves some combination of splitting the object, ...
+
+Output:
+pandas.DataFrame.groupby
+
+Input:
+In this tutorial, you'll learn how to work adeptly with the Pandas GroupBy facility while mastering ways to manipulate, transform, and summarize data. You'll work ...
+
+Output:
+None
+
+Input:
+Pandas dataframe.groupby() function is used to split the data into groups based on some criteria. pandas objects can be split on any of their axes.
+
+Output:
+dataframe.groupby()
+
+Input:
+There's probably a slicker way to do this but this works: def reindex_by_date(df): dates = pd.date_range(df.index.min(), df.index.max()) return
+
+Output:
+def reindex_by_date(df): dates = pd.date_range(df.index.min(), df.index.max()) return
+
+Input:
+DataFrame.groupby · pandas. ... Create a new index and reindex the dataframe. ... df.reindex(new_index, fill_value=0) http_status response_time Safari 404
+
+Output:
+DataFrame.groupby df.reindex(new_index, fill_value=0)
+
+Input:
+class CancerDataEntity(Model): age = columns. Text(primary_key=True) gender = columns. Text(primary_key=True) cancer = columns.
+
+Output:
+class CancerDataEntity(Model): age = columns. Text(primary_key=True) gender = columns. Text(primary_key=True) cancer = columns.
+
+Input:
+Sort of a combination of ayhan's suggestion and what you seem to want -- you can add a method to your Person class that transforms it into
+
+Output:
+None
+
+Input:
+You can refer the following code that leads to the desired result: variables = arr[0].keys(). df = pd.DataFrame([[getattr(i,k) for k in variables] for i ...
+
+Output:
+variables = arr[0].keys(). df = pd.DataFrame([[getattr(i,k) for k in variables] for i
+
+Input:
+To replace content in a file, you must search for the particular file string. The 'sed' command is used to replace any string in a file using a bash script. This command can be used in various ways to replace the content of a file in bash. The 'awk' command can also be used to replace the string in a file.
+
+Output:
+None
+
+Input:
+The easiest way is to use sed (or perl): sed -i -e 's/abc/XYZ/g' /tmp/file.txt. Which will invoke sed to do an in-place edit due to the -i option
+
+Output:
+sed -i -e 's/abc/XYZ/g' /tmp/file.txt
+
+Input:
+The procedure to change the text in files under Linux/Unix using sed: Use Stream EDitor (sed) as follows: sed -i 's/old-text/new-text/g' input. The s is the substitute command of sed for find and replace. It tells sed to find all occurrences of 'old-text' and replace with 'new-text' in a file named input.
+
+Output:
+sed -i 's/old-text/new-text/g'
+
+Input:
+Why dict.get(key) instead of dict[key]? - Stack Overflow Return the value for key if key is in the dictionary, else default. ... I will give a practical example in scraping web data using python, a lot of the ...
+
+Output:
+dict.get(key) dict[key]
+
+Input:
+Python dictionary get() Method Python dictionary method get() returns a value for the given key. If key is not available then returns default value None.
+
+Output:
+get() get()
+
+Input:
+What is the best way to filter a Java Collection? - Stack Overflow Java 8 (2014) solves this problem using streams and lambdas in one line of code: List<Person> beerDrinkers = persons.stream() .filter(p -> p.
+
+Output:
+List<Person> beerDrinkers = persons.stream() .filter(p -> p.
+
+Input:
+How to filter a list in Java - ZetCode The CollectionUtils. filter() method filters the result list with the given predicate. This is the output of the example. In this tutorial, we have used six different ways to filter a list in Java.
+
+Output:
+CollectionUtils. filter()
+
+Input:
+Java Stream Filter with Lambda Expression | Baeldung A common use case of the filter() method is processing collections. Let's make a list of customers with more than 100 points. To do that, we can ...
+
+Output:
+filter()
