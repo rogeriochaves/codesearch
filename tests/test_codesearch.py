@@ -21,3 +21,9 @@ class CodesearchTestCase(unittest.TestCase):
                 "Although this is old, here's a solution: Just put # nopep8 at the end of the line(s) that shouldn't be formatted. Hope this can still help someone!"),
             ['# nopep8']
         )
+
+        self.assertEqual(
+            model.extract_code(
+                "To access an individual known param passed in the query string, you can use request.args.get('param') . This is the \"right\" way to do it, as far as I ... 11 antwoorden ·  Topantwoord: from flask import request @app.route('/data') def data(): # here we wa"),
+            ["@app.route('/data') def data():", "request.args.get('param')"]
+        )

@@ -1,14 +1,10 @@
+import time
 import requests
 import urllib
 from bs4 import BeautifulSoup
-
-print("Initializing hugging face...")  # nopep8
-from transformers import pipeline
-
-print("Initializing model...")
-nlp = pipeline(
-    "ner", model="mrm8488/codebert-base-finetuned-stackoverflow-ner")
-print("Ready!")
+from nlp import nlp
+import re
+from multiprocessing import cpu_count, Pool
 
 
 def search_and_extract_code(query):
@@ -23,41 +19,53 @@ def search_and_extract_code(query):
     }
 
     req = requests.get(url, headers=headers)
-    soup = BeautifulSoup(req.text, features='html.parser')
-    search_results = soup.find(id="search")
-    search_text = "".join(search_results.strings).replace(u'\xa0', u' ')
+    text = req.text
+    text = text.replace("...", "")  # remove ellipsis
+    text = re.sub(r'\d{1,2} \D{3} \d{4} —', "", text)  # remove dates
 
-    return extract_code(search_text)
+    soup = BeautifulSoup(text, features='html.parser')
+    search_results = soup.find(id="search")
+    # Search results descriptions are <spans> without classes with more text than other spans
+    spans = search_results.findAll(lambda tag: tag.name ==
+                                   "span" and tag.class_ is None and len(tag.text) > 40)
+    descriptions = ["".join(s.strings) for s in spans]
+    # We take just the first third which should be relevant results to speedup processing
+    descriptions = descriptions[0:int(len(descriptions) / 3)]
+    descriptions = " ".join(descriptions)
+
+    return extract_code(descriptions)
 
 
 def extract_code(text):
     print("Processing result...")
+    time1 = time.time()
     result = nlp(text)
+    time2 = time.time()
+    print('Took %.3f ms' % ((time2 - time1) * 1000))
+
     return parse_result(result)
 
 
 def parse_result(result):
     current_code = ""
     code_blocks = []
-    last_index = 0
+    last_end = 0
     for ner in result:
-        entity = ner['entity']
+        entity = ner['entity_group']
         if 'Code_Block' not in entity and 'Function' not in entity and 'Value' not in entity:
             continue
 
-        word = ner['word'].replace("Ġ", " ")
-        if 'Value' in entity and len(word) < 5:
-            continue
+        word = ner['word']
 
-        if ner['index'] > last_index + 1:
-            if current_code != "":
+        if ner['start'] > last_end + 1:
+            if len(current_code) > 2:
                 code_blocks.append(current_code.strip())
             current_code = word.strip()
         else:
             current_code += word
+        last_end = ner['end']
 
-        last_index = ner['index']
-    if current_code != "":
+    if len(current_code) > 2:
         code_blocks.append(current_code)
     code_blocks = list(set(code_blocks))
     code_blocks = sorted(code_blocks, key=len, reverse=True)
