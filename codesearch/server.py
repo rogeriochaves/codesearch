@@ -1,4 +1,5 @@
 import model
+import urllib
 from flask import Flask, make_response, request, jsonify
 app = Flask(__name__)
 
@@ -19,23 +20,34 @@ def search():
 @app.route('/alfred')
 def alfred():
     query = request.args.get('q')
-    if query is None or query == "":
-        response = make_response(
-            "Please specify a query parameter with /?q=query", 400)
-        return response
+
+    response = {"items": [
+        {
+            "uid": "search",
+            "valid": True,
+            "title": "Search DuckDuckGo for '" + query + "'",
+            "icon": {
+                "path": "ddg.png"
+            },
+            "arg": "https://duckduckgo.com/?" + urllib.parse.urlencode({"q": query})
+        }
+    ]}
+
+    if query is None or len(query) < 5:
+        return jsonify(response)
 
     print("Searching for", query, "...")
     results = model.search_and_extract_code(query)
 
-    response = {"items": []}
-    for i, result in enumerate(results):
+    for result in results:
         response["items"].append({
-            "uid": str(i),
+            "uid": result,
             "valid": True,
-            "title": result
+            "title": result,
+            "arg": result
         })
 
     return jsonify(response)
 
 
-app.run(port=5000)
+app.run(port=2633)

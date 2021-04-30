@@ -33,7 +33,12 @@ def search_and_extract_code(query):
     descriptions = descriptions[0:int(len(descriptions) / 3)]
     descriptions = " ".join(descriptions)
 
-    return extract_code(descriptions)
+    titles = search_results.findAll("h3")
+    titles = ["".join(s.strings) for s in titles]
+    titles = titles[0:int(len(titles) / 3)]
+    titles = " ".join(titles)
+
+    return extract_code(titles + " " + descriptions)
 
 
 def extract_code(text):
