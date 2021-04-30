@@ -6,9 +6,14 @@ from nlp import nlp
 import re
 from multiprocessing import cpu_count, Pool
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 
 def search_and_extract_code(query):
+    logging.info("Searching for " + query + "...")
+
     url = 'https://www.google.com/search?hl=en&' + \
         urllib.parse.urlencode({"q": query})
     headers = {
@@ -43,11 +48,11 @@ def search_and_extract_code(query):
 
 
 def extract_code(text):
-    print("Processing result...")
+    logging.info("Processing result...")
     time1 = time.time()
     result = nlp(text)
     time2 = time.time()
-    print('Took %.3f ms' % ((time2 - time1) * 1000))
+    logging.info('Took %.3f ms' % ((time2 - time1) * 1000))
 
     return parse_result(result)
 
