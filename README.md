@@ -16,7 +16,7 @@ pip3 install -r requirements.txt
 
 ### Method 1: Local running model
 
-This approach is the quickest way to get started, it has the advantage of everything local, no registration needed anywhere and no warmup needed after starting the server. The disadvantage is that you have to download a ~500MB model, plus leave a server running on the background which takes ~1GB of RAM
+This approach is the quickest way to get started, it has the advantage of everything local, no registration needed anywhere and no warmup needed after starting the server. The disadvantage is that you have to download a ~500MB deep learning model, plus leave a server running on the background which takes ~1GB of RAM
 
 Try it out immediately (it will download the model on the first run):
 
@@ -24,7 +24,7 @@ Try it out immediately (it will download the model on the first run):
 python3 codesearch/cli.py bash replace text in file
 ```
 
-The CLI initializes the model all the time, to leave it running for faster searches, start the server:
+The CLI initializes the model each time you run it, to leave it running for faster searches, start the server:
 
 ```bash
 python3 codesearch/server.py
@@ -42,7 +42,7 @@ This is the best way to use Codesearch, it allows you to search with a shortcut 
 
 Just import the Codesearch.alfredworkflow to your Alfred and that's it!
 
-Press Option + Space to use Codesearch, or type "how <query>" on regular alfred search box
+To use it, press Option + Space and start searching, or type "how <query>" on regular alfred search box
 
 To always have the server running in the background after restarting the computer, you can go to Mac Preferences > Users & Groups > Login Items tab, click + and add the codesearch/CodesearchServer.app file
 
@@ -50,7 +50,7 @@ To always have the server running in the background after restarting the compute
 
 This approach has the advantage of not needing to leave a server running and not eating up your RAM, but it will require ~10s warmup time from Hugginface after a long time of no use
 
-To use is first [create an account at Huggin Face](https://huggingface.co/join) and get your API Token.
+To use it, first [create an account at Huggin Face](https://huggingface.co/join) and get your API Token.
 
 Then, simply set the API_TOKEN env var:
 
@@ -59,7 +59,7 @@ export API_TOKEN=huggingface_token_here
 python3 codesearch/cli.py bash replace text in file
 ```
 
-Try it a second time, after warmup this is way fast
+Try it a second time, after warmup predictions will be as fast as if you had a local server running
 
 #### Alfred Integration
 
