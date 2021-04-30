@@ -8,11 +8,12 @@ from multiprocessing import cpu_count, Pool
 import os
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 
 def search_and_extract_code(query):
-    logging.info("Searching for " + query + "...")
+    logging.info("Searching Google for " + query + "...")
+    time1 = time.time()
 
     url = 'https://www.google.com/search?hl=en&' + \
         urllib.parse.urlencode({"q": query})
@@ -44,6 +45,9 @@ def search_and_extract_code(query):
     titles = titles[0:int(len(titles) / 3)]
     titles = " ".join(titles)
 
+    time2 = time.time()
+    logging.info('Searching took %.3f ms' % ((time2 - time1) * 1000))
+
     return extract_code(titles + " " + descriptions)
 
 
@@ -52,7 +56,7 @@ def extract_code(text):
     time1 = time.time()
     result = nlp(text)
     time2 = time.time()
-    logging.info('Took %.3f ms' % ((time2 - time1) * 1000))
+    logging.info('Processing took %.3f ms' % ((time2 - time1) * 1000))
 
     return parse_result(result)
 

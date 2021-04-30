@@ -4,7 +4,7 @@ import requests
 import time
 import logging
 
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(format='%(levelname)s: %(message)s', level=logging.INFO)
 
 API_TOKEN = os.environ.get("API_TOKEN", None)
 
@@ -16,7 +16,7 @@ if API_TOKEN is None:
     model = pipeline("ner",
                      model="mrm8488/codebert-base-finetuned-stackoverflow-ner",
                      grouped_entities=True)
-    printprint("Ready!")
+    logging.info("Ready!")
 else:
     logging.info("API_TOKEN detected, using huggingface API for inference")
     url = "https://api-inference.huggingface.co/models/mrm8488/codebert-base-finetuned-stackoverflow-ner"
