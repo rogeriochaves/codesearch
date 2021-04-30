@@ -16,4 +16,26 @@ def search():
     return jsonify(results)
 
 
+@app.route('/alfred')
+def alfred():
+    query = request.args.get('q')
+    if query is None or query == "":
+        response = make_response(
+            "Please specify a query parameter with /?q=query", 400)
+        return response
+
+    print("Searching for", query, "...")
+    results = model.search_and_extract_code(query)
+
+    response = {"items": []}
+    for i, result in enumerate(results):
+        response["items"].append({
+            "uid": str(i),
+            "valid": True,
+            "title": result
+        })
+
+    return jsonify(response)
+
+
 app.run(port=5000)
