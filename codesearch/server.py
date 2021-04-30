@@ -18,10 +18,11 @@ def search():
 
 
 @app.route('/alfred')
-def alfred():
+def alfred_search():
     query = request.args.get('q')
 
-    return jsonify(alfred.search_and_extract_code_for_alfred(query))
+    results = alfred.search_and_extract_code_for_alfred(query)
+    return jsonify(results)
 
 
 app.run(port=2633)
