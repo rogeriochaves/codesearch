@@ -28,7 +28,9 @@ else:
         result = json.loads(response.content.decode("utf-8"))
         if "error" in result:
             if "estimated_time" in result:
-                time.sleep(result["estimated_time"] + 1)
+                logging.info(
+                    "Model is warming up, sleeping for %i seconds before trying again" % (result["estimated_time"] + 5))
+                time.sleep(result["estimated_time"] + 5)
                 return model(text)
             else:
                 raise Exception(result["error"])

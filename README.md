@@ -42,6 +42,8 @@ Just import the Codesearch.alfredworkflow to your Alfred and that's it!
 
 Press Option + Space to use Codesearch, or type "how <query>" on regular alfred search box
 
+To always have the server running in the background after restarting the computer, you can go to Mac Preferences > Users & Groups > Login Items tab, click + and add the codesearch/CodesearchServer.app file
+
 ### Method 2: 🤗 Hugging Face Inference API
 
 This approach has the advantage of not needing to leave a server running and not eating up your RAM, but it will require ~10s warmup time from Hugginface after a long time of no use
