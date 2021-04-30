@@ -1,4 +1,4 @@
-# Codesearch
+# </> Codesearch
 
 Quickly search for code snippets from wherever you are, no need to switch to the browser and disrupt your flow
 
@@ -61,8 +61,10 @@ Try it a second time, after warmup this is way fast
 
 To use your API Token also at Alfred Integration, after importing Codesearch.alfredworkflow go to Alfred Preferences > Workflows > Codesearch and click on the \[X\] button on the top-right, then on the Environment Variables section add two env variables:
 
+```
 API_TOKEN: paste your hugging faces API Token
 CODESEARCH_PATH: /path/where/you/cloned/codesearch
+```
 
 ### Method 3: Self-hosted
 
@@ -70,6 +72,8 @@ If you have a server available you can leave codesearch running there, this has 
 
 Then, for Alfred to work with it, just like on the Method 2, add this env variable to the workflow:
 
+```
 SERVER_URL: https://yourserver.com/
+```
 
 Have fun!
