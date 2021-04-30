@@ -81,3 +81,9 @@ SERVER_URL: https://yourserver.com/
 ```
 
 Have fun!
+
+## How it works
+
+When you search a query, in the background we do a Google search and scrape the page for the search results texts. The extracted text is then passed to a [Named Entity Recognition Deep Learning model](https://huggingface.co/mrm8488/codebert-base-finetuned-stackoverflow-ner) created by [@mrm8488](https://github.com/mrm8488) trained on a [Stackoverflow corpus](https://www.aclweb.org/anthology/2020.acl-main.443/) by Tabassum et al, and the results are displayed to you.
+
+In summary, we try to simulate what developers do a lot: quickly google something and skim over the results looking for code, then alt+tab back to write it down. Sometimes it's not enough and you need to dig deeper into the search results (that's why Codesearch also suggest to open the browser for a full search with DuckDuckGo) but more often than not a quick look is enough to trigger your memory and get you back on the flow.
