@@ -44,7 +44,7 @@ Press Option + Space to use Codesearch, or type "how <query>" on regular alfred 
 
 ### Method 2: 🤗 Hugging Face Inference API
 
-This approach has the advantage of not needing to leave a server running and not eating up your RAM, but it will require ~10s warmup time from Hugginface after a long time of no use, unless you are willing to pay $199/mo, which also has the benefit of 2x faster inferences
+This approach has the advantage of not needing to leave a server running and not eating up your RAM, but it will require ~10s warmup time from Hugginface after a long time of no use
 
 To use is first [create an account at Huggin Face](https://huggingface.co/join) and get your API Token.
 
@@ -63,3 +63,13 @@ To use your API Token also at Alfred Integration, after importing Codesearch.alf
 
 API_TOKEN: paste your hugging faces API Token
 CODESEARCH_PATH: /path/where/you/cloned/codesearch
+
+### Method 3: Self-hosted
+
+If you have a server available you can leave codesearch running there, this has the advantage of not needing warmup time from Hugginface, but the cost of leave a server running. There is a Dockerfile at the repo to facilitate the integration.
+
+Then, for Alfred to work with it, just like on the Method 2, add this env variable to the workflow:
+
+SERVER_URL: https://yourserver.com/
+
+Have fun!
