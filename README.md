@@ -1,6 +1,8 @@
 # </> Codesearch
 
-Quickly search for code snippets from wherever you are, no need to switch to the browser and disrupt your flow
+Quickly search for code snippets from wherever you are, no need to switch to the browser and disrupt your flow:
+
+![Codesearch in Action GIF](codesearch.gif)
 
 ## Installation
 
