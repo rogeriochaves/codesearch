@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from nlp import nlp
 import re
 from multiprocessing import cpu_count, Pool
+import os
 
 
 def search_and_extract_code(query):
