@@ -12,7 +12,7 @@ import fetch from "node-fetch";
  *
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
-export async function codeQuickPick(_context: ExtensionContext) {
+export async function codeQuickPick(state: { waitingForStartup: boolean }) {
   let throttlingTimeout: NodeJS.Timeout | null = null;
   let lastQuery = "";
 
@@ -25,23 +25,36 @@ export async function codeQuickPick(_context: ExtensionContext) {
     searchResults.title = "Searching...";
     searchResults.busy = true;
 
-    const suggestions: [string] = await fetch(
-      "http://localhost:2633/?q=" + encodeURIComponent(query)
-    ).then((data) => data.json());
+    try {
+      const suggestions: [string] = await fetch(
+        "http://localhost:2633/?q=" + encodeURIComponent(query)
+      ).then((data) => data.json());
+      const suggestionItems = suggestions.map((label) => ({
+        label,
+        alwaysShow: true,
+      }));
+
+      searchResults.items = [
+        {
+          label: `$(search-view-icon) Search DuckDuckGo for '${query}'`,
+          alwaysShow: true,
+        },
+      ].concat(suggestionItems);
+    } catch (error) {
+      if (state.waitingForStartup) {
+        window.showInformationMessage(
+          "Codesearch server is still starting, please wait. If it's the first time you are using it, it can take a few minutes to download the machine learning model. Thanks for your patience!"
+        );
+      } else {
+        window.showErrorMessage(
+          "Error from Codesearch server, try to reload VS Code. Error: " + error
+        );
+        console.error(error);
+      }
+    }
 
     searchResults.busy = false;
     searchResults.title = "Codesearch";
-    const suggestionItems = suggestions.map((label) => ({
-      label,
-      alwaysShow: true,
-    }));
-
-    searchResults.items = [
-      {
-        label: `$(search-view-icon) Search DuckDuckGo for '${query}'`,
-        alwaysShow: true,
-      },
-    ].concat(suggestionItems);
   };
 
   searchResults.onDidChangeValue(async (query) => {
