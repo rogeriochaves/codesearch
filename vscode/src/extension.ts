@@ -12,6 +12,18 @@ let state: {
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
+  const serverStatusBar = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left,
+    0
+  );
+  serverStatusBar.text = "$(sync~spin) Starting Codesearch Server...";
+  serverStatusBar.show();
+
+  const finishServerStart = () => {
+    state.waitingForStartup = false;
+    serverStatusBar.hide();
+  };
+
   const serverModule = context.asAbsolutePath(
     path.join("python-server", "server.py")
   );
@@ -24,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.showErrorMessage(
       "Error starting Codesearch server:\n" + error
     );
-    state.waitingForStartup = false;
+    finishServerStart();
   });
   state.server.stderr?.on("data", (data) => {
     if (data.toString().includes("INFO")) {
@@ -33,12 +45,12 @@ export function activate(context: vscode.ExtensionContext) {
       console.error(`stderr: ${data}`);
     }
     if (data.toString().includes("Running on http")) {
-      state.waitingForStartup = false;
+      finishServerStart();
     }
   });
   state.server.on("exit", (code) => {
     console.log("Child process exited with exit code " + code);
-    state.waitingForStartup = false;
+    finishServerStart();
   });
 
   // The command has been defined in the package.json file

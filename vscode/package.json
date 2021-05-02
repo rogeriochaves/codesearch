@@ -18,7 +18,7 @@
     "commands": [
       {
         "command": "codesearch.openSearchBox",
-        "title": "Open code search box"
+        "title": "Open Codesearch"
       }
     ],
     "keybindings": [
