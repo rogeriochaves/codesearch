@@ -4,6 +4,10 @@
   "description": "Quickly search for code snippets from VS Code, no need to switch to the browser and disrupt your flow",
   "publisher": "rogeriochaves",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rogeriochaves/codesearch.git"
+  },
   "engines": {
     "vscode": "^1.55.0"
   },

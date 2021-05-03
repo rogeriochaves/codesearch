@@ -2,7 +2,7 @@
 
 Quickly search for code snippets from VS Code, no need to switch to the browser and disrupt your flow:
 
-![Codesearch in Action GIF](demo.gif)
+![Codesearch in Action GIF](vscode-demo.gif)
 
 ## Requirements
 
