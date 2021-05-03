@@ -4,26 +4,56 @@ import * as vscode from "vscode";
 import { codeQuickPick } from "./codeQuickPick";
 import * as path from "path";
 import { ChildProcess, spawn } from "child_process";
+import * as tcpPortUsed from "tcp-port-used";
 
 let state: {
   server?: ChildProcess;
   waitingForStartup: boolean;
 } = { waitingForStartup: true };
+
+let serverStatusBar: vscode.StatusBarItem;
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
-  const serverStatusBar = vscode.window.createStatusBarItem(
+export async function activate(context: vscode.ExtensionContext) {
+  serverStatusBar = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
     0
   );
   serverStatusBar.text = "$(sync~spin) Starting Codesearch Server...";
   serverStatusBar.show();
 
-  const finishServerStart = () => {
-    state.waitingForStartup = false;
-    serverStatusBar.hide();
-  };
+  const isPortBusy = await tcpPortUsed.check(2633);
+  if (isPortBusy) {
+    finishServerStart();
+  } else {
+    startServer(context);
+  }
 
+  // The command has been defined in the package.json file
+  // Now provide the implementation of the command with registerCommand
+  // The commandId parameter must match the command field in package.json
+  let disposable = vscode.commands.registerCommand(
+    "codesearch.openSearchBox",
+    () => {
+      codeQuickPick(state);
+    }
+  );
+
+  context.subscriptions.push(disposable);
+}
+
+// this method is called when your extension is deactivated
+export function deactivate() {
+  state.server?.kill("SIGINT");
+}
+
+function finishServerStart() {
+  state.waitingForStartup = false;
+  serverStatusBar.hide();
+}
+
+function startServer(context: vscode.ExtensionContext) {
   const serverModule = context.asAbsolutePath(
     path.join("python-server", "server.py")
   );
@@ -52,21 +82,4 @@ export function activate(context: vscode.ExtensionContext) {
     console.log("Child process exited with exit code " + code);
     finishServerStart();
   });
-
-  // The command has been defined in the package.json file
-  // Now provide the implementation of the command with registerCommand
-  // The commandId parameter must match the command field in package.json
-  let disposable = vscode.commands.registerCommand(
-    "codesearch.openSearchBox",
-    () => {
-      codeQuickPick(state);
-    }
-  );
-
-  context.subscriptions.push(disposable);
-}
-
-// this method is called when your extension is deactivated
-export function deactivate() {
-  state.server?.kill("SIGINT");
 }
