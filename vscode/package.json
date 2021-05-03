@@ -3,7 +3,7 @@
   "displayName": "codesearch",
   "description": "Quickly search for code snippets from VS Code, no need to switch to the browser and disrupt your flow",
   "publisher": "rogeriochaves",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/rogeriochaves/codesearch.git"
@@ -16,6 +16,10 @@
   ],
   "activationEvents": [
     "*"
+  ],
+  "icon": "icon.png",
+  "extensionKind": [
+    "ui"
   ],
   "main": "./dist/extension.js",
   "contributes": {
