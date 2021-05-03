@@ -1,6 +1,6 @@
 {
   "name": "codesearch",
-  "displayName": "codesearch",
+  "displayName": "Codesearch",
   "description": "Quickly search for code snippets from VS Code, no need to switch to the browser and disrupt your flow",
   "publisher": "rogeriochaves",
   "version": "1.0.0",
