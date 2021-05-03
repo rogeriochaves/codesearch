@@ -68,7 +68,7 @@ export async function codeQuickPick(state: { waitingForStartup: boolean }) {
       const selectedSuggestion = searchResults.selectedItems[0];
       if (!selectedSuggestion) return;
 
-      if (selectedSuggestion.label == searchResults.items[0].label) {
+      if (selectedSuggestion.label === searchResults.items[0].label) {
         env.openExternal(
           Uri.parse("https://duckduckgo.com/?q=" + encodeURIComponent(query))
         );

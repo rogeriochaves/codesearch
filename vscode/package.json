@@ -1,8 +1,8 @@
 {
   "name": "codesearch",
   "displayName": "codesearch",
-  "description": "Quickly search for code snippets from the editor, no need to switch to the browser and disrupt your flow",
-  "publisher": "rchaves",
+  "description": "Quickly search for code snippets from VS Code, no need to switch to the browser and disrupt your flow",
+  "publisher": "rogeriochaves",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.55.0"

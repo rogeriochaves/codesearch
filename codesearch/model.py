@@ -83,6 +83,6 @@ def parse_result(result):
     if len(current_code) > 2:
         code_blocks.append(current_code)
     code_blocks = list(set(code_blocks))
-    code_blocks = sorted(code_blocks, key=len, reverse=True)
+    code_blocks = sorted(code_blocks, reverse = True)
 
     return code_blocks
