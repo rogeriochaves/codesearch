@@ -21,6 +21,8 @@ export async function codeQuickPick(state: { waitingForStartup: boolean }) {
   searchResults.onDidChangeValue;
 
   const doSearch = (query: string) => async () => {
+    if (query.length === 0) return;
+
     lastQuery = query;
     searchResults.title = "Searching...";
     searchResults.busy = true;
