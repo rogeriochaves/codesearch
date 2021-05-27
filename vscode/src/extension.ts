@@ -3,9 +3,9 @@
 import * as vscode from "vscode";
 import { codeQuickPick } from "./codeQuickPick";
 import * as path from "path";
-import { ChildProcess, spawn, execSync } from "child_process";
+import { ChildProcess, spawn, exec } from "child_process";
 import * as tcpPortUsed from "tcp-port-used";
-import { existsSync, writeFileSync } from "fs";
+import * as fs from "fs";
 
 let state: {
   server?: ChildProcess;
@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
   if (isPortBusy) {
     finishServerStart();
   } else {
-    startServer(context);
+    await startServer(context);
   }
 
   // The command has been defined in the package.json file
@@ -54,12 +54,39 @@ function finishServerStart() {
   serverStatusBar.hide();
 }
 
-function startServer(context: vscode.ExtensionContext) {
+function fileExists(context: vscode.ExtensionContext, path: string) {
+  return new Promise((resolve, reject) => {
+    fs.stat(context.asAbsolutePath(path), (err, stat) => {
+      if (err == null) {
+        resolve(true);
+      } else if (err.code === "ENOENT") {
+        resolve(false);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+function asyncExec(command: string) {
+  return new Promise<void>((resolve, reject) => {
+    exec(command, (err) => {
+      if (err == null) {
+        resolve();
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+
+async function startServer(context: vscode.ExtensionContext) {
   let firstUse = false;
   try {
-    firstUse = !existsSync(
-      context.asAbsolutePath(path.join("python-server", "transformers"))
-    );
+    firstUse = !(await fileExists(
+      context,
+      path.join("python-server", "transformers")
+    ));
     if (firstUse) {
       vscode.window.showInformationMessage(
         "Installing Codesearch model and dependencies, this will take a few minutes"
@@ -69,12 +96,12 @@ function startServer(context: vscode.ExtensionContext) {
         path.join("python-server", "requirements.txt")
       );
       const requirementsTarget = context.asAbsolutePath("python-server");
-      execSync(
+      await asyncExec(
         `pip3 install -r ${requirements} --target=${requirementsTarget}`
       );
 
       const nlp = context.asAbsolutePath(path.join("python-server", "nlp.py"));
-      execSync(`python3 ${nlp}`);
+      await asyncExec(`python3 ${nlp}`);
     }
   } catch (error) {
     vscode.window.showErrorMessage("Error installing Codesearch:\n" + error);
