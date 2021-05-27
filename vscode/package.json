@@ -38,6 +38,7 @@
     ]
   },
   "scripts": {
+    "vscode:publish": "vsce publish",
     "vscode:prepublish": "npm run package",
     "copy-server": "cp -R ../codesearch/ python-server && cp ../requirements.txt python-server/",
     "compile": "npm run copy-server && webpack",
