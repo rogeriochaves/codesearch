@@ -3,8 +3,9 @@
 import * as vscode from "vscode";
 import { codeQuickPick } from "./codeQuickPick";
 import * as path from "path";
-import { ChildProcess, spawn } from "child_process";
+import { ChildProcess, spawn, execSync } from "child_process";
 import * as tcpPortUsed from "tcp-port-used";
+import { existsSync, writeFileSync } from "fs";
 
 let state: {
   server?: ChildProcess;
@@ -54,6 +55,32 @@ function finishServerStart() {
 }
 
 function startServer(context: vscode.ExtensionContext) {
+  let firstUse = false;
+  try {
+    firstUse = !existsSync(
+      context.asAbsolutePath(path.join("python-server", "transformers"))
+    );
+    if (firstUse) {
+      vscode.window.showInformationMessage(
+        "Installing Codesearch model and dependencies, this will take a few minutes"
+      );
+
+      const requirements = context.asAbsolutePath(
+        path.join("python-server", "requirements.txt")
+      );
+      const requirementsTarget = context.asAbsolutePath("python-server");
+      execSync(
+        `pip3 install -r ${requirements} --target=${requirementsTarget}`
+      );
+
+      const nlp = context.asAbsolutePath(path.join("python-server", "nlp.py"));
+      execSync(`python3 ${nlp}`);
+    }
+  } catch (error) {
+    vscode.window.showErrorMessage("Error installing Codesearch:\n" + error);
+    finishServerStart();
+    return;
+  }
   const serverModule = context.asAbsolutePath(
     path.join("python-server", "server.py")
   );
@@ -75,6 +102,9 @@ function startServer(context: vscode.ExtensionContext) {
       console.error(`stderr: ${data}`);
     }
     if (data.toString().includes("Running on http")) {
+      if (firstUse) {
+        vscode.window.showInformationMessage("Codesearch is ready to use!");
+      }
       finishServerStart();
     }
   });
